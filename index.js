@@ -20,7 +20,13 @@ const Todo = mongoose.model('Todo', toDoSchema);
 
 // const __dirname = path.resolve();
 
-app.use(express.json(), cors());
+app.use(express.json());
+// Allow all origins
+app.use(cors());
+// Allow specific origin(s)
+app.use(cors({
+  origin: 'https://todos-server-3uw2yjr4t-afaq-ahmads-projects-571f8223.vercel.app'
+}));
 
 // app.use(express.urlencoded({ extended : true}));
 
@@ -32,7 +38,7 @@ app.post("/create_todo", async (req, res) => {
         const newTodo = new Todo({ task });
         await newTodo.save()
         let todos_db = await Todo.find();
-        res.status(201).json(todos_db)
+        res.json(todos_db)
 
     } catch (error) {
         console.log(error);
@@ -46,7 +52,7 @@ app.get("/get_todos", async (_, res) => {
 
     try {
         const todos_db = await Todo.find();
-        res.status(200).json(todos_db)
+        res.json(todos_db)
     } catch (error) {
         res.status(500).json({ error : "Failed to get todos"})
         console.log(error);
@@ -60,7 +66,7 @@ app.delete("/delete_todo", async (req, res) => {
         const id = req.query.id
         await Todo.findByIdAndDelete(id)
         const todos_db = await Todo.find();
-    res.json(todos_db)
+        res.json(todos_db)
     } catch (error) {
         res.status(500).json({ error: 'Failed to delete todo' });
     }
@@ -83,7 +89,7 @@ app.post("/update_todo", async (req, res) => {
 // })
 
 
+connectToMongoDB();
 app.listen(PORT, () => {
-    connectToMongoDB();
     console.log(`server is listening by ${PORT}`)
 })
