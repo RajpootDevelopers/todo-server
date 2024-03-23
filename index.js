@@ -25,7 +25,7 @@ app.use(express.json());
 app.use(cors());
 // Allow specific origin(s)
 app.use(cors({
-  origin: 'https://todos-server-3uw2yjr4t-afaq-ahmads-projects-571f8223.vercel.app'
+  origin: 'https://todos-server-murex.vercel.app'
 }));
 
 // app.use(express.urlencoded({ extended : true}));
